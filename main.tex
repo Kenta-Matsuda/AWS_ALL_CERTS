@@ -54,6 +54,32 @@
 \fancyhead[RO]{\sffamily\nouppercase{\leftmark}}
 \fancyfoot[CO,CE]{\thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
+
+% TOC (Table of contents) style: book-like spacing & typography (memoir built-in)
+\renewcommand{\printtoctitle}[1]{%
+  \vspace*{-3.0em}%
+  \begin{center}
+    \sffamily\Huge\bfseries\color{teal}#1%
+  \end{center}%
+}
+\renewcommand{\aftertoctitle}{%
+  \par\noindent\color{teal}\rule{\textwidth}{0.4pt}\par\vskip 0.0em%
+}
+
+\setlength{\cftbeforechapterskip}{0.75em}
+\setlength{\cftchapterindent}{0pt}
+\setlength{\cftchapternumwidth}{2.6em}
+\renewcommand{\cftchapterfont}{\sffamily\bfseries\large}
+\renewcommand{\cftchapterpagefont}{\sffamily\bfseries\large}
+
+\setlength{\cftbeforesectionskip}{0.1em}
+\setlength{\cftsectionindent}{2.6em}
+\setlength{\cftsectionnumwidth}{3.2em}
+\renewcommand{\cftsectionfont}{\sffamily\small}
+\renewcommand{\cftsectionpagefont}{\sffamily\small}
+
+\renewcommand{\cftdotsep}{1.5}
 
 % Code listings
 \lstset{basicstyle=\ttfamily\small,breaklines=true,backgroundcolor=\color{gray!6},frame=single,framesep=3pt}
@@ -62,7 +88,9 @@
 \tcbset{colback=yellow!8,colframe=yellow!60!black,left=2mm,right=2mm,boxsep=2mm,rounded corners,arc=3mm}
 
 % Hyperref
-\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
+% - hypertexnames=false: frontmatter/mainmatter でページ番号がリセットされても
+%   PDF内の destination 名が衝突しないようにする（xdvipdfmx の @page.1 警告対策）
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal,linktocpage=true,hypertexnames=false}
 
 % Title page
 \title{AWS認定 全冠攻略書}
@@ -73,7 +101,6 @@
 % Cover image (cover.png) as a full-bleed first page (A4)
 \begingroup
 \thispagestyle{empty}
-\newgeometry{margin=0mm}
 \begin{tikzpicture}[remember picture,overlay]
   \node[anchor=north west,inner sep=0pt,outer sep=0pt]
     at (current page.north west)
@@ -81,7 +108,6 @@
 \end{tikzpicture}
 \null
 \clearpage
-\restoregeometry
 \endgroup
 
 % Avoid inserting blank pages between cover/frontmatter/mainmatter
@@ -89,8 +115,11 @@
 \frontmatter
 
 % Table of contents
+\begingroup
+\pagestyle{plain}
 \renewcommand{\contentsname}{目次}
 \tableofcontents
+\endgroup
 \mainmatter
 
 % Include chapter source files (chapter 1 is now externalized)
