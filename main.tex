@@ -1,0 +1,105 @@
+% Publish-style template: beginner-friendly technical book
+\documentclass[11pt,a4paper,oneside,openany]{memoir}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\usepackage{microtype}
+\usepackage{xcolor}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{listings}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{calc,positioning}
+\usepackage{hyperref}
+\usepackage{geometry}
+
+% Page geometry: roomy inner margin for binding-like feel
+\geometry{left=32mm,right=22mm,top=28mm,bottom=28mm}
+
+% Fonts: serif body, sans headings
+\setmainfont{Times New Roman}
+\setsansfont{Inter}
+\setCJKmainfont{Meiryo}
+
+% define CJK sans and mono to avoid xeCJK warnings
+\setCJKsansfont{Meiryo}
+\setCJKmonofont{Meiryo}
+
+% Cover colors and cover typeface
+\definecolor{titlecolor}{HTML}{FEE800} % AWS認定全冠攻略本
+\definecolor{violet}{HTML}{742189}     % purple background (top)
+\definecolor{blackbg}{HTML}{231816}    % black background (bottom)
+\definecolor{authorcolor}{HTML}{FEFCFE} % author name
+
+% Cover typeface: prefer Hiragino Kaku Gothic W8; fall back to Meiryo if unavailable
+\IfFontExistsTF{Hiragino Kaku Gothic W8}{%
+  \newfontfamily\coverlatin{Hiragino Kaku Gothic W8}[Renderer=ICU]
+  \setCJKfamilyfont{cover}{Hiragino Kaku Gothic W8}
+}{%
+  \newfontfamily\coverlatin{Meiryo}[Renderer=ICU]
+  \setCJKfamilyfont{cover}{Meiryo}
+}
+
+% Heading styles
+\titleformat{\chapter}[hang]{\sffamily\Huge\bfseries\color{teal}}{\thechapter}{1em}{}
+\titlespacing*{\chapter}{0pt}{-10pt}{20pt}
+\titleformat{\section}{\sffamily\Large\bfseries}{\thesection}{1em}{}
+\titlespacing*{\section}{0pt}{12pt}{8pt}
+
+% Header/footer
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[RO]{\sffamily\nouppercase{\leftmark}}
+\fancyfoot[CO,CE]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+% Code listings
+\lstset{basicstyle=\ttfamily\small,breaklines=true,backgroundcolor=\color{gray!6},frame=single,framesep=3pt}
+
+% Tip box style
+\tcbset{colback=yellow!8,colframe=yellow!60!black,left=2mm,right=2mm,boxsep=2mm,rounded corners,arc=3mm}
+
+% Hyperref
+\hypersetup{colorlinks=true,linkcolor=teal,urlcolor=teal}
+
+% Title page
+\title{AWS認定 全冠攻略書}
+\author{松田　健太}
+\date{\today}
+
+\begin{document}
+% Cover image (cover.png) as a full-bleed first page (A4)
+\begingroup
+\thispagestyle{empty}
+\newgeometry{margin=0mm}
+\begin{tikzpicture}[remember picture,overlay]
+  \node[anchor=north west,inner sep=0pt,outer sep=0pt]
+    at (current page.north west)
+    {\includegraphics[width=\paperwidth,height=\paperheight]{cover.png}};
+\end{tikzpicture}
+\null
+\restoregeometry
+\endgroup
+
+% Avoid inserting blank pages between cover/frontmatter/mainmatter
+\let\cleardoublepage\clearpage
+\frontmatter
+
+% Table of contents
+\tableofcontents
+\mainmatter
+
+% Include chapter source files (chapter 1 is now externalized)
+\include{chapters/ch01}
+\include{chapters/ch02}
+\include{chapters/ch03}
+\include{chapters/ch04}
+\include{chapters/ch05}
+
+\backmatter
+\chapter*{謝辞}
+ここに謝辞を記載します
+
+\end{document}
